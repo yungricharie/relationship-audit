@@ -138,26 +138,13 @@ CORE_HEALTH_CATEGORIES = [
     "Conflict Resolution",
 ]
 
-DATA_FILE = "relationship_audits.json"
 
-
-def load_relationships():
-    try:
-        with open(DATA_FILE, "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-
-def save_relationships():
-    with open(DATA_FILE, "w") as file:
-        json.dump(st.session_state.relationships, file, indent=4)
 # ============================================================
 # SESSION STATE
 # ============================================================
 
 if "relationships" not in st.session_state:
-    st.session_state.relationships = load_relationships()
+    st.session_state.relationships = []
 
 if "latest_result" not in st.session_state:
     st.session_state.latest_result = None
@@ -356,8 +343,6 @@ def save_relationship(name, scores):
     st.session_state.relationships.append(
         relationship
     )
-
-    save_relationships()
 
     return relationship
 
@@ -1302,7 +1287,7 @@ if st.session_state.relationships:
                         index
                     )
 
-                    save_relationships()
+        
 
                     if (
                         st.session_state.latest_result
